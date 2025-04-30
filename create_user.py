@@ -1,7 +1,7 @@
 import psycopg2
 import bcrypt
 
-def create_user(username, password, email=None, phone=None):
+def create_user(username, password, email):
     conn = psycopg2.connect(
         dbname="postgres",
         user="postgres.xqyhrcznzkwkvgfcuebp",
@@ -10,33 +10,21 @@ def create_user(username, password, email=None, phone=None):
         port="6543"
     )
     cursor = conn.cursor()
-    
     try:
-        # Hash the password
-        password_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
-        
-        # Create new user
-        cursor.execute('''
-            INSERT INTO users (username, password_hash, email, phone)
-            VALUES (%s, %s, %s, %s)
-            RETURNING id
-        ''', (username, password_hash, email, phone))
-        
-        user_id = cursor.fetchone()[0]
+        # Check if email already exists
+        cursor.execute('SELECT email FROM users WHERE lower(email) = lower(%s)', (email,))
+        if cursor.fetchone():
+            print(f"User with email {email} already exists.")
+            return
+        password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        cursor.execute('INSERT INTO users (username, password_hash, email) VALUES (%s, %s, %s)',
+                     (username, password_hash.decode('utf-8'), email))
         conn.commit()
-        print(f"Successfully created user: {username}")
-        return True
+        print(f"User created: {email}")
     except psycopg2.Error as e:
         print(f"Error creating user: {str(e)}")
-        return False
     finally:
         conn.close()
 
 if __name__ == "__main__":
-    # Create user with exact case preference
-    create_user(
-        username="Drumnich",
-        password="YourNewPassword123!",
-        email=None,  # You can add your email if you want
-        phone=None   # You can add your phone if you want
-    ) 
+    create_user("drumnich", "decembre 7", "drumnich@gmail.com") 
