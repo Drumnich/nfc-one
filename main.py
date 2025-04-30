@@ -228,7 +228,9 @@ class LoginDialog(QDialog):
         self.password_input = QLineEdit()
         self.password_input.setEchoMode(QLineEdit.Password)
         
-        form_layout.addRow("Username:", self.username_input)
+        form_layout.addRow("Email:", self.username_input)
+        self.username_input.setPlaceholderText("Enter your email")
+        
         form_layout.addRow("Password:", self.password_input)
         
         button_layout = QHBoxLayout()
@@ -304,7 +306,10 @@ class RegisterDialog(QDialog):
         self.password_input.setEchoMode(QLineEdit.Password)
         self.confirm_password_input = QLineEdit()
         self.confirm_password_input.setEchoMode(QLineEdit.Password)
+        self.email_input = QLineEdit()
+        self.email_input.setPlaceholderText("Enter email address")
         
+        form_layout.addRow("Email:", self.email_input)
         form_layout.addRow("Username:", self.username_input)
         form_layout.addRow("Password:", self.password_input)
         form_layout.addRow("Confirm Password:", self.confirm_password_input)
@@ -804,18 +809,16 @@ class NFCCardManager(QMainWindow):
         while True:
             dialog = LoginDialog(self)
             result = dialog.exec_()
-            
             if result == QDialog.Accepted:
-                username = dialog.username_input.text()
+                email = dialog.username_input.text()
                 password = dialog.password_input.text()
-                
-                if self.authenticate_user(username, password):
-                    self.current_user = username
-                    self.user_label.setText(f"Welcome, {username}!")
+                if self.authenticate_user(email, password):
+                    self.current_user = email
+                    self.user_label.setText(f"Welcome, {email}!")
                     self.load_card_history()
                     break
                 else:
-                    QMessageBox.warning(self, "Error", "Invalid username or password")
+                    QMessageBox.warning(self, "Error", "Invalid email or password")
             elif result == 2:  # Register
                 self.show_register()
             else:
@@ -828,29 +831,26 @@ class NFCCardManager(QMainWindow):
             username = dialog.username_input.text()
             password = dialog.password_input.text()
             confirm_password = dialog.confirm_password_input.text()
-            
+            email = dialog.email_input.text()
             if password != confirm_password:
                 QMessageBox.warning(self, "Error", "Passwords do not match")
                 return
-                
-            if self.register_user(username, password):
+            if self.register_user(username, password, email):
                 QMessageBox.information(self, "Success", "Registration successful! Please login.")
             else:
-                QMessageBox.warning(self, "Error", "Username already exists")
+                QMessageBox.warning(self, "Error", "Email already exists")
                 
-    def register_user(self, username, password):
-        """Register a new user"""
+    def register_user(self, username, password, email):
+        """Register a new user with email"""
         conn, cursor = self.get_db_connection()
         try:
-            # Check if username already exists (case-insensitive check)
-            cursor.execute('SELECT username FROM users WHERE lower(username) = lower(%s)', (username,))
+            # Check if email already exists
+            cursor.execute('SELECT email FROM users WHERE lower(email) = lower(%s)', (email,))
             if cursor.fetchone():
-                return False  # Username already exists
-            
-            # Store all information exactly as entered
+                return False  # Email already exists
             password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-            cursor.execute('INSERT INTO users (username, password_hash) VALUES (%s, %s)',
-                         (username, password_hash.decode('utf-8')))  # Store hash as string
+            cursor.execute('INSERT INTO users (username, password_hash, email) VALUES (%s, %s, %s)',
+                         (username, password_hash.decode('utf-8'), email))
             conn.commit()
             return True
         except psycopg2.Error:
@@ -858,36 +858,22 @@ class NFCCardManager(QMainWindow):
         finally:
             conn.close()
             
-    def authenticate_user(self, username, password):
-        """Authenticate user credentials"""
+    def authenticate_user(self, email, password):
+        """Authenticate user credentials by email"""
         conn, cursor = self.get_db_connection()
         try:
-            # Use case-insensitive search but return exact stored values
-            cursor.execute('''
-                SELECT username, password_hash, email, phone 
-                FROM users 
-                WHERE lower(username) = lower(%s)
-            ''', (username,))
+            cursor.execute('SELECT email, password_hash FROM users WHERE lower(email) = lower(%s)', (email,))
             result = cursor.fetchone()
-            
             if result:
                 stored_hash = result[1]
-                try:
-                    # Convert password to bytes and verify
-                    if bcrypt.checkpw(password.encode('utf-8'), stored_hash.encode('utf-8')):
-                        # Store all user information exactly as it was entered
-                        self.current_user = result[0]  # Exact username
-                        self.current_user_email = result[2]  # Exact email
-                        self.current_user_phone = result[3]  # Exact phone
-                        return True
-                except Exception as e:
-                    logging.error(f"Password verification error: {str(e)}")
-            return False
-        except Exception as e:
-            logging.error(f"Authentication error: {str(e)}")
-            return False
+                if isinstance(stored_hash, str):
+                    stored_hash = stored_hash.encode('utf-8')
+                if bcrypt.checkpw(password.encode('utf-8'), stored_hash):
+                    self.current_user = result[0]  # Exact email
+                    return True
         finally:
             conn.close()
+        return False
         
     def logout(self):
         """Handle user logout"""
