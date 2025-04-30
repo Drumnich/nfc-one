@@ -890,21 +890,24 @@ class NFCCardManager(QMainWindow):
         """Load card history for current user"""
         if not self.current_user:
             return
-            
         conn, cursor = self.get_db_connection()
         try:
+            cursor.execute('SELECT id FROM users WHERE email = %s', (self.current_user,))
+            result = cursor.fetchone()
+            if not result:
+                self.update_status("User not found for loading card history.", "error")
+                return
+            user_id = result[0]
             cursor.execute('''
                 SELECT COALESCE(custom_name, 'Unnamed Card'), card_id, card_type, first_seen, last_seen 
                 FROM card_history 
-                WHERE user_id = (SELECT id FROM users WHERE username = %s)
+                WHERE user_id = %s
                 ORDER BY last_seen DESC
-            ''', (self.current_user,))
-            
+            ''', (user_id,))
             self.history_table.setRowCount(0)
             for row in cursor.fetchall():
                 row_position = self.history_table.rowCount()
                 self.history_table.insertRow(row_position)
-                
                 for col, value in enumerate(row):
                     item = QTableWidgetItem(str(value))
                     item.setFlags(item.flags() & ~Qt.ItemIsEditable)  # Make item read-only
@@ -1011,18 +1014,19 @@ class NFCCardManager(QMainWindow):
         """Update card history for the current user"""
         if not self.current_user:
             return
-            
         conn, cursor = self.get_db_connection()
         try:
-            cursor.execute('SELECT id FROM users WHERE username = %s', (self.current_user,))
-            user_id = cursor.fetchone()[0]
-            
+            cursor.execute('SELECT id FROM users WHERE email = %s', (self.current_user,))
+            result = cursor.fetchone()
+            if not result:
+                self.update_status("User not found for card history update.", "error")
+                return
+            user_id = result[0]
             # Check if card exists in history
             cursor.execute('''
                 SELECT id FROM card_history 
                 WHERE user_id = %s AND card_id = %s
             ''', (user_id, card_id))
-            
             if cursor.fetchone():
                 # Update last_seen
                 cursor.execute('''
@@ -1036,7 +1040,6 @@ class NFCCardManager(QMainWindow):
                     INSERT INTO card_history (user_id, card_id, card_type) 
                     VALUES (%s, %s, %s)
                 ''', (user_id, card_id, card_type))
-            
             conn.commit()
             self.load_card_history()
         finally:
@@ -1047,29 +1050,30 @@ class NFCCardManager(QMainWindow):
         if not self.current_user:
             logging.warning("Attempted to load locations without user login")
             return
-            
         self.locations_list.clear()
         conn, cursor = self.get_db_connection()
         try:
+            cursor.execute('SELECT id FROM users WHERE email = %s', (self.current_user,))
+            result = cursor.fetchone()
+            if not result:
+                self.update_status("User not found for loading locations.", "error")
+                return
+            user_id = result[0]
             cursor.execute('''
                 SELECT name, description 
                 FROM locations 
-                WHERE user_id = (SELECT id FROM users WHERE username = %s)
+                WHERE user_id = %s
                 ORDER BY name
-            ''', (self.current_user,))
-            
+            ''', (user_id,))
             locations = cursor.fetchall()
             logging.debug(f"Found {len(locations)} locations for user {self.current_user}")
-            
             for name, description in locations:
                 item = QListWidgetItem(name)
                 if description:
                     item.setToolTip(description)
                 self.locations_list.addItem(item)
-                
             if not locations:
                 logging.info("No locations found for current user")
-                
         except psycopg2.Error as e:
             error_msg = str(e)
             logging.error(f"Error loading locations: {error_msg}")
@@ -1081,24 +1085,27 @@ class NFCCardManager(QMainWindow):
         """Load all cards associated with selected location"""
         if not self.current_user:
             return
-            
         self.cards_list.clear()
         selected_items = self.locations_list.selectedItems()
         if not selected_items:
             return
-            
         location_name = selected_items[0].text()
         conn, cursor = self.get_db_connection()
         try:
+            cursor.execute('SELECT id FROM users WHERE email = %s', (self.current_user,))
+            result = cursor.fetchone()
+            if not result:
+                self.update_status("User not found for loading cards.", "error")
+                return
+            user_id = result[0]
             cursor.execute('''
                 SELECT ch.custom_name, ch.card_id, ch.card_type
                 FROM access_points ap
                 JOIN locations l ON ap.location_id = l.id
                 JOIN card_history ch ON ap.card_id = ch.card_id
-                WHERE l.name = %s AND l.user_id = (SELECT id FROM users WHERE username = %s)
+                WHERE l.name = %s AND l.user_id = %s
                 ORDER BY ch.custom_name, ch.card_id
-            ''', (location_name, self.current_user))
-            
+            ''', (location_name, user_id))
             for name, card_id, card_type in cursor.fetchall():
                 display_name = name if name else f"Unnamed Card ({card_id[:8]}...)"
                 item = QListWidgetItem(f"{display_name} - {card_type}")
@@ -1169,29 +1176,32 @@ class NFCCardManager(QMainWindow):
         if not self.current_card or not self.current_user:
             QMessageBox.warning(self, "No Card", "Please place a card on the reader first.")
             return
-            
         selected_items = self.locations_list.selectedItems()
         if not selected_items:
             QMessageBox.warning(self, "No Location", "Please select a location first.")
             return
-            
         location_name = selected_items[0].text()
         conn, cursor = self.get_db_connection()
         try:
-            cursor.execute('SELECT id FROM users WHERE username = %s', (self.current_user,))
-            user_id = cursor.fetchone()[0]
-            
+            cursor.execute('SELECT id FROM users WHERE email = %s', (self.current_user,))
+            result = cursor.fetchone()
+            if not result:
+                self.update_status("User not found for adding card to location.", "error")
+                return
+            user_id = result[0]
             cursor.execute('SELECT id FROM locations WHERE user_id = %s AND name = %s',
                          (user_id, location_name))
-            location_id = cursor.fetchone()[0]
-            
+            loc_result = cursor.fetchone()
+            if not loc_result:
+                self.update_status("Location not found.", "error")
+                return
+            location_id = loc_result[0]
             # Add card to location
             cursor.execute('''
                 INSERT INTO access_points (user_id, location_id, card_id)
                 VALUES (%s, %s, %s)
             ''', (user_id, location_id, self.current_card))
             conn.commit()
-            
             self.load_cards_for_location()
             self.update_status(f"Added card to {location_name}", "success")
         except psycopg2.Error as e:
@@ -1221,15 +1231,19 @@ class NFCCardManager(QMainWindow):
         if reply == QMessageBox.Yes:
             conn, cursor = self.get_db_connection()
             try:
+                cursor.execute('SELECT id FROM users WHERE email = %s', (self.current_user,))
+                result = cursor.fetchone()
+                if not result:
+                    self.update_status("User not found for removing card from location.", "error")
+                    return
+                user_id = result[0]
                 cursor.execute('''
                     DELETE FROM access_points 
                     WHERE card_id = %s AND location_id = (
                         SELECT id FROM locations 
-                        WHERE name = %s AND user_id = (
-                            SELECT id FROM users WHERE username = %s
-                        )
+                        WHERE name = %s AND user_id = %s
                     )
-                ''', (card_id, location_name, self.current_user))
+                ''', (card_id, location_name, user_id))
                 conn.commit()
                 
                 self.load_cards_for_location()
@@ -1256,16 +1270,17 @@ class NFCCardManager(QMainWindow):
         """Rename the current card"""
         if not self.current_card or not self.current_user:
             return
-            
         new_name = self.card_name_input.text().strip()
         if not new_name:
             return
-            
         conn, cursor = self.get_db_connection()
         try:
-            cursor.execute('SELECT id FROM users WHERE username = %s', (self.current_user,))
-            user_id = cursor.fetchone()[0]
-            
+            cursor.execute('SELECT id FROM users WHERE email = %s', (self.current_user,))
+            result = cursor.fetchone()
+            if not result:
+                self.update_status("User not found for renaming card.", "error")
+                return
+            user_id = result[0]
             # Update card name
             cursor.execute('''
                 UPDATE card_history 
@@ -1273,7 +1288,6 @@ class NFCCardManager(QMainWindow):
                 WHERE user_id = %s AND card_id = %s
             ''', (new_name, user_id, self.current_card))
             conn.commit()
-            
             self.update_status(f"Card renamed to: {new_name}", "success")
             self.load_card_history()
         except psycopg2.Error as e:
@@ -1285,14 +1299,18 @@ class NFCCardManager(QMainWindow):
         """Get the custom name for a card"""
         if not self.current_user or not card_id:
             return None
-            
         conn, cursor = self.get_db_connection()
         try:
+            cursor.execute('SELECT id FROM users WHERE email = %s', (self.current_user,))
+            result = cursor.fetchone()
+            if not result:
+                return None
+            user_id = result[0]
             cursor.execute('''
                 SELECT custom_name 
                 FROM card_history 
                 WHERE user_id = %s AND card_id = %s
-            ''', (self.current_user, card_id))
+            ''', (user_id, card_id))
             result = cursor.fetchone()
             return result[0] if result and result[0] else None
         finally:

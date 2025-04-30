@@ -3806,3 +3806,126 @@
 2025-04-30 02:02:04,600 - ERROR - Authentication error: Invalid salt
 2025-04-30 02:03:50,728 - ERROR - Authentication error: Invalid salt
 2025-04-30 02:04:03,828 - ERROR - Authentication error: Invalid salt
+2025-04-30 18:43:42,979 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:43:42,980 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:43:42,980 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:43:42,980 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:43:42,981 - INFO - New card detected - ID: 758C9069, Type: MIFARE Classic
+2025-04-30 18:43:43,440 - ERROR - Error during card check: 'NoneType' object is not subscriptable
+2025-04-30 18:43:43,918 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:43:43,919 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:43:43,919 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:43:43,919 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:43:44,909 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:43:44,910 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:43:44,910 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:43:44,911 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:43:45,911 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:43:45,911 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:43:45,911 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:43:45,912 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:43:46,909 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:43:46,910 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:43:46,910 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:43:46,910 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:48:24,934 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:48:24,934 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:48:24,934 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:48:24,935 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:48:24,935 - INFO - New card detected - ID: 758C9069, Type: MIFARE Classic
+2025-04-30 18:48:26,507 - ERROR - Error during card check: invalid input syntax for type uuid: "drumnich@gmail.com"
+LINE 4:                 WHERE user_id = 'drumnich@gmail.com' AND car...
+                                        ^
+
+2025-04-30 18:48:26,553 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:48:26,554 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:48:26,554 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:48:26,554 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:48:26,959 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:48:26,959 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:48:26,959 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:48:26,959 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:48:27,963 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:48:27,963 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:48:27,963 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:48:27,964 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:48:28,959 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:48:28,959 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:48:28,959 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:48:28,960 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:48:29,958 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:48:29,958 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:48:29,958 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:48:29,959 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:48:30,957 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:48:30,957 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:48:30,958 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:48:30,958 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:48:31,958 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:48:31,958 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:48:31,958 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:48:31,959 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:48:32,961 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:48:32,961 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:48:32,961 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:48:32,962 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:48:33,961 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:48:33,961 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:48:33,961 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:48:33,963 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:48:34,959 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:48:34,960 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:48:34,960 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:48:34,961 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:48:35,961 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:48:35,961 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:48:35,961 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:48:35,962 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:48:36,960 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:48:36,960 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:48:36,960 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:48:36,961 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:48:37,960 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:48:37,961 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:48:37,961 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:48:37,962 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:48:38,961 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:48:38,961 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:48:38,961 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:48:38,963 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:48:39,956 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:48:39,956 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:48:39,956 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:48:39,956 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:48:40,956 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:48:40,956 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:48:40,956 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:48:40,957 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:48:41,962 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:48:41,963 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:48:41,963 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:48:41,964 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:52:19,444 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:52:19,444 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:52:19,444 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:52:19,445 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:52:19,445 - INFO - New card detected - ID: 758C9069, Type: MIFARE Classic
+2025-04-30 18:52:21,159 - DEBUG - No custom name found for card
+2025-04-30 18:52:21,679 - DEBUG - Found 0 locations for user drumnich@gmail.com
+2025-04-30 18:52:21,680 - INFO - No locations found for current user
+2025-04-30 18:52:21,722 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:52:21,722 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:52:21,723 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:52:21,724 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:52:22,772 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:52:22,772 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:52:22,772 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:52:22,773 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:52:23,823 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:52:23,824 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:52:23,824 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:52:23,825 - INFO - Successfully read card ID using direct UID command: 758C9069
+2025-04-30 18:52:24,872 - DEBUG - Detecting card type for ATR: 3B 8E 80 01 80 31 80 66 B0 84 0C 01 6E 10 83 00 90 00 0C
+2025-04-30 18:52:24,872 - INFO - Attempting to read card (Attempt 1/3)
+2025-04-30 18:52:24,872 - INFO - Card type detected: MIFARE Classic
+2025-04-30 18:52:24,873 - INFO - Successfully read card ID using direct UID command: 758C9069
