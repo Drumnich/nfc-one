@@ -7,6 +7,14 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import LandingPage from './LandingPage';
+import Login from './Login';
+import SignUp from './SignUp';
+import Dashboard from './Dashboard';
+// Placeholder imports for profile, settings
+const Profile = () => <div>Profile (to be implemented)</div>;
+const Settings = () => <div>Settings (to be implemented)</div>;
 
 function Auth({ onAuth }) {
   const [email, setEmail] = useState('');
@@ -50,7 +58,7 @@ function Auth({ onAuth }) {
   );
 }
 
-function Dashboard({ user, onLogout }) {
+function DashboardComponent({ user, onLogout }) {
   const [tab, setTab] = useState(0);
   const [cards, setCards] = useState([]);
   const [locations, setLocations] = useState([]);
@@ -282,7 +290,19 @@ function App() {
   };
 
   if (!user) return <Auth onAuth={setUser} />;
-  return <Dashboard user={user} onLogout={handleLogout} />;
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </Router>
+  );
 }
 
 export default App;
