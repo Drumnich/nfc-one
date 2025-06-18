@@ -1,3 +1,30 @@
+# One Desktop App
+
+## Setup
+
+1. Install Python 3.9+ (https://www.python.org/downloads/)
+2. Install dependencies:
+   ```sh
+   pip install -r requirements.txt
+   ```
+3. Make sure your backend API is running (Flask server on http://localhost:5000)
+4. Plug in your NFC reader (PC/SC compatible, e.g., ACR122U)
+
+## Launch
+
+```sh
+python main.py
+```
+
+## Features
+- Login with your account
+- Scan NFC cards and add them to your dashboard
+- (Planned) Assign names, block, and delete cards
+- (Planned) Sync with backend and mobile app
+
+---
+For support, contact your admin or visit the One website.
+
 # One - NFC Card Access Manager
 
 A desktop application for managing and tracking access points for your NFC card.

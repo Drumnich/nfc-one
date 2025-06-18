@@ -1,4 +1,11 @@
-nfcpy==1.0.4
-PySide6>=6.5.0
-bcrypt>=4.0.1
-pyscard>=2.0.7 
+flask==2.0.1
+werkzeug==2.0.3
+flask-cors==3.0.10
+gunicorn==20.1.0
+psycopg2-binary>=2.9.5
+python-dotenv==1.0.1
+prometheus-client==0.11.0
+bcrypt==3.2.0
+PySide6==6.6.1
+pyscard==2.0.7
+requests==2.31.0 

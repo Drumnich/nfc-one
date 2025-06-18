@@ -7,11 +7,12 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import LandingPage from './LandingPage';
 import Login from './Login';
 import SignUp from './SignUp';
 import Dashboard from './Dashboard';
+import CorporateDashboard from './components/CorporateDashboard';
 // Placeholder imports for profile, settings
 const Profile = () => <div>Profile (to be implemented)</div>;
 const Settings = () => <div>Settings (to be implemented)</div>;
@@ -273,30 +274,79 @@ function DashboardComponent({ user, onLogout }) {
 
 function App() {
   const [user, setUser] = useState(null);
+  const [userType, setUserType] = useState(null);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
-      if (data?.user) setUser(data.user);
+      if (data?.user) {
+        setUser(data.user);
+        // Fetch user type
+        supabase
+          .from('users')
+          .select('user_type')
+          .eq('id', data.user.id)
+          .single()
+          .then(({ data: userData }) => {
+            setUserType(userData?.user_type || 'individual');
+          });
+      }
     });
-    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user || null);
+
+    const { data: listener } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user) {
+        setUser(session.user);
+        // Fetch user type on auth state change
+        const { data: userData } = await supabase
+          .from('users')
+          .select('user_type')
+          .eq('id', session.user.id)
+          .single();
+        setUserType(userData?.user_type || 'individual');
+      } else {
+        setUser(null);
+        setUserType(null);
+      }
     });
-    return () => { listener?.subscription.unsubscribe(); };
+
+    return () => {
+      listener?.subscription.unsubscribe();
+    };
   }, []);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setUser(null);
+    setUserType(null);
   };
 
   if (!user) return <Auth onAuth={setUser} />;
+
   return (
     <Router>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            One
+          </Typography>
+          <Button color="inherit" onClick={handleLogout} startIcon={<LogoutIcon />}>
+            Logout
+          </Button>
+        </Toolbar>
+      </AppBar>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route 
+          path="/dashboard" 
+          element={
+            userType === 'corporate_admin' || userType === 'building_admin' ? (
+              <CorporateDashboard />
+            ) : (
+              <Dashboard />
+            )
+          } 
+        />
         <Route path="/profile" element={<Profile />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="*" element={<Navigate to="/" />} />
